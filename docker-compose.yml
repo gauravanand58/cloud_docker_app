@@ -1,0 +1,26 @@
+version: '3'
+services:
+  service:
+    build: .
+    ports:
+     - "80:5000"
+    links:
+     - catalogue
+     - log
+     - notes
+
+  catalogue:
+    container_name: "catalogue"
+    build: ./catalogue
+    ports:
+     - "5002:5002"
+  log:
+    container_name: "log"
+    build: ./log
+    ports:
+     - "5001:5001"
+  notes:
+    container_name: "notes"
+    build: ./notes
+    ports:
+     - "5003:5003"

@@ -1,0 +1,67 @@
+<!-- Search Bar -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <Title>Book Titles and Authors</Title>
+		<style>
+		  table, th, td {
+			  padding: 10px;
+			  border: 1px solid black; 
+			  border-collapse: collapse;
+		  }
+		</style>
+    </head>
+    <body bgcolor="#E6E6FA">
+        <h1><center>yesGutenberg:Offline catalogs</center></h1>
+        <form id="main_form" method="POST" class="example" action="/search"
+         style="margin:auto;max-width:600px">
+            <input type="text" placeholder="Search by author or book" name="book">
+            <button type="submit"><i class="fa fa-search">Search data</i></button>
+			<button type="submit" onclick="duplicateRecord()"><i class="fa fa-search">Get Notes</i></button>
+        </form>
+		
+		<script>
+		  function duplicateRecord() {
+			form=document.getElementById('main_form');
+			form.action='/get_notes';
+			form.submit();
+		  }
+		</script>
+        <p></p>
+        <center>
+		{% if data%}
+			<form method="POST" class="example" action="{{url_for('add_note')}}"
+			 style="margin:auto;max-width:600px">
+				<input type="hidden" name="keyword" value="{{keyword}}" placeholder="Search by author or book">
+				<textarea rows="8" cols="50" placeholder="Enter notes" name="note"></textarea>
+				<button type="submit"><i class="fa fa-search">Add note</i></button>
+			</form>
+			</br></br>
+			<p><b>Search results matching keyword "{{keyword}}"</b></p>
+			<table>
+				<thead>
+					<tr>
+						<th>Book Title</th>
+						<th>Author</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for item in data %}
+					<tr>
+						<td> {{item['title']}} </td>
+						<td> {{item['author']}} </td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		{% elif notes%}
+			<p><b>Notes:</b></p>
+			{% for item in notes %}
+				<p>{{item}}</p>
+			{% endfor %}
+		{% else %}
+			<p>{{res}}</p>
+		{% endif %}
+        </center>
+    </body>
+</html>
